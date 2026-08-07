@@ -68,5 +68,134 @@
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
 
-const readlineSync = require('readline-sync');
+import java.util.Scanner;
 
+public class Main {
+
+    // Read a matrix row by row; each row is space-separated values on one line
+    public static int[][] readMatrix(Scanner scanner, int numRows, int numCols) {
+        int[][] grid = new int[numRows][numCols];
+        for (int r = 0; r < numRows; r++) {
+            System.out.print("Enter row " + (r + 1) + ": ");
+            for (int c = 0; c < numCols; c++) {
+                grid[r][c] = scanner.nextInt();
+            }
+        }
+        return grid;
+    }
+
+    // Find the widest number so every column lines up neatly and print formatted
+    public static void displayMatrix(int[][] grid) {
+        int pad = 0;
+        for (int[] line : grid) {
+            for (int entry : line) {
+                pad = Math.max(pad, String.valueOf(entry).length());
+            }
+        }
+
+        // Print each row with every value right-justified to that width
+        String formatSpecifier = "%" + pad + "d  ";
+        for (int[] line : grid) {
+            for (int entry : line) {
+                System.out.printf(formatSpecifier, entry);
+            }
+            System.out.println();
+        }
+    }
+
+    public static int[][] transpose(int[][] grid) {
+        int rCount = grid.length;        // number of rows in the original
+        int cCount = grid[0].length;     // number of columns in the original
+        
+        // Result has swapped dimensions: cCount x rCount
+        int[][] output = new int[cCount][rCount];
+        for (int c = 0; c < cCount; c++) {
+            for (int r = 0; r < rCount; r++) {
+                output[c][r] = grid[r][c]; // column c becomes row c
+            }
+        }
+        return output;
+    }
+
+    public static int[][] addMatrices(int[][] x, int[][] y) {
+        int rCount = x.length;
+        int cCount = x[0].length;
+        int[][] output = new int[rCount][cCount];
+        
+        for (int r = 0; r < rCount; r++) {
+            for (int c = 0; c < cCount; c++) {
+                output[r][c] = x[r][c] + y[r][c]; // element-wise sum
+            }
+        }
+        return output;
+    }
+
+    public static int[][] multiplyMatrices(int[][] x, int[][] y) {
+        int rowsX = x.length;       // rows in A
+        int inner = x[0].length;    // columns in A (= rows in B)
+        int colsY = y[0].length;    // columns in B
+        
+        int[][] output = new int[rowsX][colsY];
+        for (int r = 0; r < rowsX; r++) {
+            for (int c = 0; c < colsY; c++) {
+                int acc = 0;
+                for (int k = 0; k < inner; k++) {
+                    acc += x[r][k] * y[k][c];
+                }
+                output[r][c] = acc;
+            }
+        }
+        return output;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // -------- PART A: Transpose --------
+        System.out.println("=== Part A: Transpose ===");
+        System.out.print("Enter number of rows: ");
+        int numRows = scanner.nextInt();
+        System.out.print("Enter number of columns: ");
+        int numCols = scanner.nextInt();
+        int[][] grid = readMatrix(scanner, numRows, numCols);
+
+        System.out.println("\nOriginal Matrix:");
+        displayMatrix(grid);
+        System.out.println("\nTransposed Matrix:");
+        displayMatrix(transpose(grid));
+
+        // -------- PART B: Addition --------
+        System.out.println("\n=== Part B: Addition ===");
+        System.out.print("Enter number of rows: ");
+        numRows = scanner.nextInt();
+        System.out.print("Enter number of columns: ");
+        numCols = scanner.nextInt();
+        
+        System.out.println("Matrix A:");
+        int[][] x = readMatrix(scanner, numRows, numCols);
+        System.out.println("Matrix B:");
+        int[][] y = readMatrix(scanner, numRows, numCols);
+
+        System.out.println("\nSum (A + B):");
+        displayMatrix(addMatrices(x, y));
+
+        // -------- PART C: Multiplication --------
+        System.out.println("\n=== Part C: Multiplication ===");
+        System.out.print("Enter rows of A (M): ");
+        int m = scanner.nextInt();
+        System.out.print("Enter columns of A / rows of B (N): ");
+        int n = scanner.nextInt();
+        System.out.print("Enter columns of B (P): ");
+        int p = scanner.nextInt();
+
+        System.out.printf("Matrix A (%dx%d):\n", m, n);
+        x = readMatrix(scanner, m, n);
+        System.out.printf("Matrix B (%dx%d):\n", n, p);
+        y = readMatrix(scanner, n, p);
+
+        System.out.println("\nProduct (A x B):");
+        displayMatrix(multiplyMatrices(x, y));
+
+        scanner.close();
+    }
+}
