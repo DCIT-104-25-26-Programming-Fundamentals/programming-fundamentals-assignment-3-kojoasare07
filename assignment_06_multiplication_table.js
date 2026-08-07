@@ -60,3 +60,69 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// PART A: Generate a single multiplication table
+function printTable(number) {
+
+    console.log(\nMultiplication Table for ${number}:);
+
+    for (let i = 1; i <= 12; i++) {
+        console.log(${number}  x  ${i}  =  ${number * i});
+    }
+}
+
+// PART B: Generate tables from 1 to N
+function printTablesUpToN(n) {
+
+    for (let number = 1; number <= n; number++) {
+
+        console.log(\nMultiplication Table for ${number}:);
+
+        for (let i = 1; i <= 12; i++) {
+            console.log(${number}  x  ${i}  =  ${number * i});
+        }
+
+        console.log("---------------------------");
+    }
+}
+
+// Main function
+function main() {
+
+    // PART A input validation
+    let number;
+
+    while (true) {
+        let input = readlineSync.question("Enter a number for multiplication table: ");
+
+        if (Number.isInteger(Number(input)) && Number(input) > 0) {
+            number = Number(input);
+            break;
+        }
+
+        console.log("Error: Please enter a positive integer.");
+    }
+
+    printTable(number);
+
+
+    // PART B input validation
+    let n;
+
+    while (true) {
+        let input = readlineSync.question("\nEnter N for tables from 1 to N: ");
+
+        if (Number.isInteger(Number(input)) && Number(input) > 0) {
+            n = Number(input);
+            break;
+        }
+
+        console.log("Error: Please enter a positive integer.");
+    }
+
+    printTablesUpToN(n);
+}
+
+// Call main
+main();
