@@ -43,3 +43,41 @@
 // =============================================================================
 
 
+import java.util.Scanner;
+
+public class Main {
+
+    // Method to check if a number is prime
+    public static boolean checkPrime(int value) {
+        // Numbers less than 2 are not prime
+        if (value < 2) {
+            return false;
+        }
+        // Test possible divisors up to the square root
+        for (int divisor = 2; divisor <= Math.sqrt(value); divisor++) {
+            if (value % divisor == 0) {
+                return false; // Found a divisor, not prime
+            }
+        }
+        return true; // No divisors found, prime
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        if (scanner.hasNextInt()) {
+            int n = scanner.nextInt();
+
+            if (checkPrime(n)) {
+                System.out.println(n + " is a prime number.");
+            } else {
+                System.out.println(n + " is NOT a prime number.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter an integer.");
+        }
+
+        scanner.close();
+    }
+}
