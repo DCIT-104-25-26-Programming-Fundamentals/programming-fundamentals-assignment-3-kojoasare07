@@ -75,3 +75,140 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// Arithmetic Functions
+function add(numbers) {
+    let result = 0;
+
+    for (let i = 0; i < numbers.length; i++) {
+        result += numbers[i];
+    }
+
+    return result;
+}
+
+function subtract(numbers) {
+    let result = numbers[0];
+
+    for (let i = 1; i < numbers.length; i++) {
+        result -= numbers[i];
+    }
+
+    return result;
+}
+
+function multiply(numbers) {
+    let result = 1;
+
+    for (let i = 0; i < numbers.length; i++) {
+        result *= numbers[i];
+    }
+
+    return result;
+}
+
+function divide(numbers) {
+    let result = numbers[0];
+
+    for (let i = 1; i < numbers.length; i++) {
+
+        if (numbers[i] === 0) {
+            return null;
+        }
+
+        result /= numbers[i];
+    }
+
+    return result;
+}
+
+function modulus(numbers) {
+    let result = numbers[0];
+
+    for (let i = 1; i < numbers.length; i++) {
+
+        if (numbers[i] === 0) {
+            return null;
+        }
+
+        result %= numbers[i];
+    }
+
+    return result;
+}
+
+function exponentiate(numbers) {
+    let result = numbers[0];
+
+    for (let i = 1; i < numbers.length; i++) {
+        result **= numbers[i];
+    }
+
+    return result;
+}
+
+// Function to get multiple numbers
+function getNumbers() {
+
+    let count;
+
+    while (true) {
+
+        let input = readlineSync.question(
+            "How many numbers do you want to enter? "
+        );
+
+        if (Number.isInteger(Number(input)) && Number(input) >= 2) {
+            count = Number(input);
+            break;
+        }
+
+        console.log(
+            "Error: Please enter an integer greater than or equal to 2."
+        );
+    }
+
+    let numbers = [];
+
+    for (let i = 0; i < count; i++) {
+
+        while (true) {
+
+            let input = readlineSync.question(
+                `Enter number ${i + 1}: `
+            );
+
+            if (!isNaN(input) && input.trim() !== "") {
+                numbers.push(Number(input));
+                break;
+            }
+
+            console.log("Error: Please enter a valid number.");
+        }
+    }
+
+    return numbers;
+}
+
+// Main Function
+function main() {
+
+    let running = true;
+
+    while (running) {
+
+        console.log("\n============================");
+        console.log("     SIMPLE CALCULATOR");
+        console.log("============================");
+        console.log("1. Addition");
+        console.log("2. Subtraction");
+        console.log("3. Multiplication");
+        console.log("4. Division");
+        console.log("5. Modulus");
+        console.log("6. Exponentiation");
+        console.log("7. Quit");
+
+        let choice = readlineSync.question(
+            "Select an operation (1-7): "
+        );
