@@ -85,3 +85,162 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// Function to add a student
+function addStudent(students) {
+    let name = readlineSync.question("Student name: ").trim();
+
+    if (name === "") {
+        console.log("Error: Student name cannot be empty.");
+        return;
+    }
+
+    let id = readlineSync.question("Student ID: ").trim();
+
+    let numScores;
+
+    while (true) {
+        let input = readlineSync.question("How many scores? ");
+
+        if (Number.isInteger(Number(input)) && Number(input) > 0) {
+            numScores = Number(input);
+            break;
+        }
+
+        console.log("Error: Please enter a positive integer.");
+    }
+
+    let scores = [];
+
+    for (let i = 0; i < numScores; i++) {
+        while (true) {
+            let input = readlineSync.question(`Enter score ${i + 1}: `);
+
+            if (!isNaN(input) && Number(input) >= 0) {
+                scores.push(Number(input));
+                break;
+            }
+
+            console.log("Error: Please enter a valid score.");
+        }
+    }
+
+    students.push({
+        name: name,
+        id: id,
+        scores: scores
+    });
+
+    console.log(Student "${name}" added successfully.);
+}
+
+// Function to calculate average
+function calculateAverage(scores) {
+    let sum = 0;
+
+    for (let i = 0; i < scores.length; i++) {
+        sum += scores[i];
+    }
+
+    return sum / scores.length;
+}
+
+// Function to display all students
+function displayStudents(students) {
+
+    if (students.length === 0) {
+        console.log("No students have been added yet.");
+        return;
+    }
+
+    console.log("\n==========================================================");
+    console.log("Name\t\tID\t\tScores\t\tAverage");
+    console.log("==========================================================");
+
+    for (let i = 0; i < students.length; i++) {
+
+        let student = students[i];
+        let average = calculateAverage(student.scores);
+
+        console.log(
+            ${student.name}\t${student.id}\t${student.scores.join(", ")}\t${average.toFixed(2)}
+        );
+    }
+}
+
+// Function to calculate average score for a specific student
+function findStudentAverage(students) {
+
+    if (students.length === 0) {
+        console.log("No students have been added yet.");
+        return;
+    }
+
+    let id = readlineSync.question("Enter student ID: ").trim();
+
+    for (let i = 0; i < students.length; i++) {
+
+        if (students[i].id === id) {
+
+            let average = calculateAverage(students[i].scores);
+
+            console.log(
+                ${students[i].name}'s average score: ${average.toFixed(2)}
+            );
+            return;
+        }
+    }
+
+    console.log("Error: Student ID not found.");
+}
+
+// Main function
+function main() {
+
+    let students = [];
+    let running = true;
+
+    while (running) {
+
+        console.log("\n================================");
+        console.log("   STUDENT RECORD SYSTEM MENU");
+        console.log("================================");
+        console.log("1. Add student");
+        console.log("2. Display all students");
+        console.log("3. Calculate average score");
+        console.log("4. Quit");
+
+        let choice = readlineSync.question(
+            "Enter your choice (1-4): "
+        );
+
+        switch (choice) {
+
+            case "1":
+                addStudent(students);
+                break;
+
+            case "2":
+                displayStudents(students);
+                break;
+
+            case "3":
+                findStudentAverage(students);
+                break;
+
+            case "4":
+                console.log("Goodbye!");
+                running = false;
+                break;
+
+            default:
+                console.log(
+                    "Error: Invalid choice. Please enter a number from 1 to 4."
+                );
+        }
+    }
+}
+
+// Call main
+main();
