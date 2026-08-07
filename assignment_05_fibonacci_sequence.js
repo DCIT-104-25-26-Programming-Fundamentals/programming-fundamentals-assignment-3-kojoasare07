@@ -54,4 +54,88 @@
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
+public class Main {
+
+    // Build a list of the first 'count' Fibonacci numbers using a loop
+    public static List<Long> generateFibonacci(int count) {
+        List<Long> result = new ArrayList<>();
+        long prev = 0;
+        long curr = 1;
+
+        for (int i = 0; i < count; i++) {
+            result.add(prev);
+            long temp = prev + curr; // advance: new prev is old curr, new curr is their sum
+            prev = curr;
+            curr = temp;
+        }
+        return result;
+    }
+
+    // Check if a number is part of the Fibonacci sequence
+    public static boolean isFibonacci(long target) {
+        // Negative numbers can't be Fibonacci numbers
+        if (target < 0) {
+            return false;
+        }
+
+        // Generate Fibonacci numbers until we reach or pass the target
+        long prev = 0;
+        long curr = 1;
+
+        while (prev < target) {
+            long temp = prev + curr;
+            prev = curr;
+            curr = temp;
+        }
+
+        // If we landed exactly on the target, it's a Fibonacci number
+        return prev == target;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // -------- PART A: Print first N terms --------
+        System.out.print("How many terms? ");
+        if (scanner.hasNextInt()) {
+            int count = scanner.nextInt();
+
+            if (count <= 0) {
+                System.out.println("Error: N must be a positive integer.");
+            } else {
+                List<Long> result = generateFibonacci(count);
+
+                // Print the sequence space-separated
+                System.out.print("Fibonacci sequence: ");
+                for (int i = 0; i < result.size(); i++) {
+                    System.out.print(result.get(i) + (i < result.size() - 1 ? " " : ""));
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("Error: Invalid input.");
+            scanner.close();
+            return;
+        }
+
+        // -------- PART B: Check membership --------
+        System.out.print("\nEnter a number to check: ");
+        if (scanner.hasNextLong()) {
+            long target = scanner.nextLong();
+
+            if (isFibonacci(target)) {
+                System.out.println(target + " is a Fibonacci number.");
+            } else {
+                System.out.println(target + " is NOT a Fibonacci number.");
+            }
+        } else {
+            System.out.println("Error: Invalid input.");
+        }
+
+        scanner.close();
+    }
+}
