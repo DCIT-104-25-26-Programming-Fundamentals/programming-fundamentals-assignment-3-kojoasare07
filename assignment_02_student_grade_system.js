@@ -50,3 +50,47 @@
 // =============================================================================
 
 
+import java.util.Scanner;
+
+public class Main {
+
+    // Validates range and determines letter grade
+    public static String getGrade(int mark) {
+        // Validate the range first
+        if (mark < 0 || mark > 100) {
+            return null; // Java equivalent of Python's None
+        }
+        // Determine the letter grade
+        if (mark >= 80) {
+            return "A";
+        } else if (mark >= 70) {
+            return "B";
+        } else if (mark >= 60) {
+            return "C";
+        } else if (mark >= 50) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter student score (0-100): ");
+        if (scanner.hasNextInt()) {
+            int studentMark = scanner.nextInt();
+            String letter = getGrade(studentMark);
+
+            if (letter == null) {
+                System.out.println("Error: Score must be between 0 and 100.");
+            } else {
+                System.out.println("Grade: " + letter);
+            }
+        } else {
+            System.out.println("Error: Please enter a valid integer.");
+        }
+
+        scanner.close();
+    }
+}
